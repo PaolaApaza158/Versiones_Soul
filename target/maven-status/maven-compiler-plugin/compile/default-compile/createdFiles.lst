@@ -1,0 +1,13 @@
+com\emergentes\utiles\ConexionDB.class
+com\emergentes\modelo\Grupo.class
+com\emergentes\controlador\ArtistaControlador.class
+com\emergentes\modelo\Cancion.class
+com\emergentes\dao\GeneroDAO.class
+com\emergentes\dao\GeneroDAOimpl.class
+com\emergentes\modelo\Artista.class
+com\emergentes\modelo\Usuarios.class
+com\emergentes\modelo\Genero.class
+com\emergentes\dao\ArtistaDAO.class
+com\emergentes\dao\ArtistaDAOimpl.class
+com\emergentes\controlador\GeneroControlador.class
+com\emergentes\modelo\Album.class
