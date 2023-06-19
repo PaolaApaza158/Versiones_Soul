@@ -53,6 +53,12 @@ CREATE TABLE `artista`  (
 ALTER TABLE `artista`
 MODIFY COLUMN `genero`  VARCHAR(20);
 
+------------------------------
+-- Actualizar tabla artista
+------------------------------
+ALTER TABLE `artista`
+MODIFY COLUMN `genero`  VARCHAR(20);
+
 -- ----------------------------
 -- Records of artista
 -- ----------------------------
