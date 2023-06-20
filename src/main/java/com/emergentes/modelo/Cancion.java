@@ -1,14 +1,16 @@
 package com.emergentes.modelo;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Cancion {
 
     private int cancion_id;
     private String titulo;
-    private String duracion;
-    private String fecha;
+    private Time duracion;
+    private Date fecha;
     private int artista_id;
     private int album_id;
     private int genero_id;
@@ -19,16 +21,8 @@ public class Cancion {
     private String genero;
     private String grupo;
 
-    public String getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(String grupo) {
-        this.grupo = grupo;
-    }
-    
-
     public Cancion() {
+
     }
 
     public int getCancion_id() {
@@ -47,19 +41,19 @@ public class Cancion {
         this.titulo = titulo;
     }
 
-    public String getDuracion() {
+    public Time getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(String duracion) {
+    public void setDuracion(Time duracion) {
         this.duracion = duracion;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -127,9 +121,34 @@ public class Cancion {
         this.genero = genero;
     }
 
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
     @Override
     public String toString() {
         return "Cancion{" + "cancion_id=" + cancion_id + ", titulo=" + titulo + ", duracion=" + duracion + ", fecha=" + fecha + ", artista_id=" + artista_id + ", album_id=" + album_id + ", genero_id=" + genero_id + ", grupo_id=" + grupo_id + ", cancion_img=" + cancion_img + ", artista=" + artista + ", album=" + album + ", genero=" + genero + ", grupo=" + grupo + '}';
     }
 
+    public void setDuracion(String duracion) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setFecha(String fecha) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.fecha = formatter.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setDuracion(int duracion) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
+
