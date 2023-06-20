@@ -33,7 +33,7 @@ public class ArtistaControlador extends HttpServlet {
                 case "edit":
                     id = Integer.parseInt(request.getParameter("artista_id"));
                     art = dao.getById(id);
-                    //art con datos
+                    //gen con datos
                     request.setAttribute("artista", art);
                     request.getRequestDispatcher("frmartista.jsp").forward(request, response);
                     break;
@@ -61,10 +61,9 @@ public class ArtistaControlador extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("artista_id"));
         String nombre = request.getParameter("nombre");
         String genero = request.getParameter("genero");
-        String fecha_nacimiento= request.getParameter("fecha_nacimiento");
+        String fecha_nacimiento = request.getParameter("fecha_nacimiento");
         String nacionalidad = request.getParameter("nacionalidad");
         String artista_img = request.getParameter("artista_img");
-
         Artista art = new Artista();
 
         art.setArtista_id(id);
@@ -73,6 +72,7 @@ public class ArtistaControlador extends HttpServlet {
         art.setFecha_nacimiento(fecha_nacimiento);
         art.setNacionalidad(nacionalidad);
         art.setArtista_img(artista_img);
+       
 
         ArtistaDAO dao = new ArtistaDAOimpl();
         if (id == 0) {

@@ -23,7 +23,7 @@
 
             <br>
             <form action = "ArtistaControlador" method="post">
-                <input type="hidden" name="artista_id" value="${artista.genero_id}">
+                <input type="hidden" name="artista_id" value="${artista.artista_id}">
                 <div class="mb-3">
                     <label for="" class="form-label">Nombre</label>
                     <input type="text" class="form-control" name="nombre" value="${artista.nombre}" placeholder="Escriba el nombre del artista">
@@ -46,11 +46,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Imagen</label>
-                    <input type="text" class="form-control" name="imagen" value="${artista.imagen}" placeholder="Imagen">
+                    <input type="text" class="form-control" name="artista_img" value="${artista.artista_img}" placeholder="Imagen">
                 </div>
-
-
-
                 <button type="submit" class="btn btn-primary">Enviar</button>
             </form>
         </div>

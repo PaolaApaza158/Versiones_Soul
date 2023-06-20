@@ -1,12 +1,12 @@
 
 package com.emergentes.modelo;
 
-public class Usuarios {
+public class Usuario {
     private int usuario_id;
     private String email;
     private String password;
 
-    public Usuarios() {
+    public Usuario() {
     }
 
     public int getUsuario_id() {

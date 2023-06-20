@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistaDAOimpl extends ConexionDB implements ArtistaDAO{
+public class ArtistaDAOimpl extends ConexionDB implements ArtistaDAO {
 
     @Override
     public void insert(Artista artista) throws Exception {
-          try {
+        try {
             this.conectar();
             PreparedStatement ps = this.conn.prepareStatement("INSERT INTO artista (nombre, genero, fecha_nacimiento, nacionalidad, artista_img) values (?,?,?,?,?)");
             ps.setString(1, artista.getNombre());
@@ -30,7 +30,7 @@ public class ArtistaDAOimpl extends ConexionDB implements ArtistaDAO{
 
     @Override
     public void update(Artista artista) throws Exception {
-                try {
+        try {
             this.conectar();
             PreparedStatement ps = this.conn.prepareStatement("UPDATE artista SET nombre=?, genero=?, fecha_nacimiento=?, nacionalidad=?, artista_img=? where artista_id = ?");
             ps.setString(1, artista.getNombre());
@@ -49,7 +49,7 @@ public class ArtistaDAOimpl extends ConexionDB implements ArtistaDAO{
 
     @Override
     public void delete(int id) throws Exception {
-          try {
+        try {
             this.conectar();
             PreparedStatement ps = this.conn.prepareStatement("DELETE FROM artista WHERE artista_id = ?");
             ps.setInt(1, id);
@@ -58,29 +58,29 @@ public class ArtistaDAOimpl extends ConexionDB implements ArtistaDAO{
             throw e;
         } finally {
             this.desconectar();
-        }    }
-    
+        }
+    }
 
     @Override
     public Artista getById(int id) throws Exception {
-       Artista art = new Artista();
+        Artista art = new Artista();
         try {
-            this.conectar();
+            this.conectar ();
             PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM artista WHERE artista_id = ?");
             ps.setInt(1, id);
-            
+
             ResultSet rs = ps.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 art.setArtista_id(rs.getInt("artista_id"));
                 art.setNombre(rs.getString("nombre"));
                 art.setGenero(rs.getString("genero"));
                 art.setFecha_nacimiento(rs.getString("fecha_nacimiento"));
                 art.setNacionalidad(rs.getString("nacionalidad"));
                 art.setArtista_img(rs.getString("artista_img"));
-                
+
             }
-            
+
         } catch (Exception e) {
             throw e;
         } finally {
@@ -96,24 +96,24 @@ public class ArtistaDAOimpl extends ConexionDB implements ArtistaDAO{
             this.conectar();
             PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM artista");
             ResultSet rs = ps.executeQuery();
-            
+
             lista = new ArrayList<Artista>();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 Artista art = new Artista();
-                
+
                 art.setArtista_id(rs.getInt("artista_id"));
                 art.setNombre(rs.getString("nombre"));
                 art.setGenero(rs.getString("genero"));
                 art.setFecha_nacimiento(rs.getString("fecha_nacimiento"));
                 art.setNacionalidad(rs.getString("nacionalidad"));
                 art.setArtista_img(rs.getString("artista_img"));
-                
+
                 lista.add(art);
             }
             rs.close();
             ps.close();
-            
+
         } catch (Exception e) {
             throw e;
         } finally {
@@ -121,5 +121,5 @@ public class ArtistaDAOimpl extends ConexionDB implements ArtistaDAO{
         }
         return lista;
     }
-    
+
 }

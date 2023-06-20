@@ -6,10 +6,12 @@ import java.sql.Date;
 public class Album {
     private int album_id;
     private String titulo;
-    private String artista_id;
-    private String genero_id;
+    private int artista_id;
+    private int genero_id;
     private Date fecha_lanzamiento;
     private String portada_img;
+    private String artista;
+    private String genero;
 
     public Album() {
     }
@@ -30,19 +32,19 @@ public class Album {
         this.titulo = titulo;
     }
 
-    public String getArtista_id() {
+    public int getArtista_id() {
         return artista_id;
     }
 
-    public void setArtista_id(String artista_id) {
+    public void setArtista_id(int artista_id) {
         this.artista_id = artista_id;
     }
 
-    public String getGenero_id() {
+    public int getGenero_id() {
         return genero_id;
     }
 
-    public void setGenero_id(String genero_id) {
+    public void setGenero_id(int genero_id) {
         this.genero_id = genero_id;
     }
 
@@ -62,9 +64,26 @@ public class Album {
         this.portada_img = portada_img;
     }
 
+    public String getArtista() {
+        return artista;
+    }
+
+    public void setArtista(String artista) {
+        this.artista = artista;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
     @Override
     public String toString() {
-        return "Album{" + "album_id=" + album_id + ", titulo=" + titulo + ", artista_id=" + artista_id + ", genero_id=" + genero_id + ", fecha_lanzamiento=" + fecha_lanzamiento + ", portada_img=" + portada_img + '}';
+        return "Album{" + "album_id=" + album_id + ", titulo=" + titulo + ", artista_id=" + artista_id + ", genero_id=" + genero_id + ", fecha_lanzamiento=" + fecha_lanzamiento + ", portada_img=" + portada_img + ", artista=" + artista + ", genero=" + genero + '}';
     }
+    
     
 }
