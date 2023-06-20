@@ -15,10 +15,9 @@ import com.emergentes.modelo.Artista;
 import com.emergentes.modelo.Cancion;
 import com.emergentes.modelo.Genero;
 import com.emergentes.modelo.Grupo;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,17 +32,20 @@ public class CancionControlador extends HttpServlet {
             throws ServletException, IOException {
         try {
             CancionDAO dao = new CancionDAOimpl();
-            ArtistaDAO daoArtista = new ArtistaDAOimpl();
+
             AlbumDAO daoAlbum = new AlbumDAOimpl();
+            ArtistaDAO daoArtista = new ArtistaDAOimpl();
             GeneroDAO daoGenero = new GeneroDAOimpl();
             GrupoDAO daoGrupo = new GrupoDAOimpl();
+
             int id;
-            List<Artista> lista_artista = null;
+
             List<Album> lista_album = null;
+            List<Artista> lista_artista = null;
             List<Genero> lista_genero = null;
             List<Grupo> lista_grupo = null;
 
-            Cancion can = new Cancion();
+            Cancion cancion = new Cancion();
 
             String action = (request.getParameter("action") != null) ? request.getParameter("action") : "view";
             switch (action) {
@@ -52,27 +54,32 @@ public class CancionControlador extends HttpServlet {
                     lista_album = daoAlbum.getAll();
                     lista_genero = daoGenero.getAll();
                     lista_grupo = daoGrupo.getAll();
+
                     request.setAttribute("lista_artista", lista_artista);
                     request.setAttribute("lista_album", lista_album);
                     request.setAttribute("lista_genero", lista_genero);
                     request.setAttribute("lista_grupo", lista_grupo);
 
-                    request.setAttribute("cancion", can);
+                    request.setAttribute("cancion", cancion);
+
                     request.getRequestDispatcher("frmcancion.jsp").forward(request, response);
                     break;
                 case "edit":
                     id = Integer.parseInt(request.getParameter("cancion_id"));
-                    can = dao.getById(id);
+                    cancion = dao.getById(id);
+
                     lista_artista = daoArtista.getAll();
                     lista_album = daoAlbum.getAll();
                     lista_genero = daoGenero.getAll();
                     lista_grupo = daoGrupo.getAll();
+
                     request.setAttribute("lista_artista", lista_artista);
                     request.setAttribute("lista_album", lista_album);
                     request.setAttribute("lista_genero", lista_genero);
                     request.setAttribute("lista_grupo", lista_grupo);
 
-                    request.setAttribute("cancion", can);
+                    request.setAttribute("cancion", cancion);
+
                     request.getRequestDispatcher("frmcancion.jsp").forward(request, response);
                     break;
                 case "delete":
@@ -81,9 +88,8 @@ public class CancionControlador extends HttpServlet {
                     response.sendRedirect("CancionControlador");
                     break;
                 case "view":
-                    //obtener la lista de registros
-                    List<Cancion> canciones = dao.getAll();
-                    request.setAttribute("canciones", canciones);
+                    List<Cancion> lista = dao.getAll();
+                    request.setAttribute("cancion", lista);
                     request.getRequestDispatcher("cancion.jsp").forward(request, response);
                     break;
             }
@@ -92,51 +98,53 @@ public class CancionControlador extends HttpServlet {
             System.out.println("Error: " + e.getMessage());
         }
     }
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    int id = Integer.parseInt(request.getParameter("cancion_id"));
+    String titulo = request.getParameter("titulo");
+    String duracionStr = request.getParameter("duracion");
+    String fecha = request.getParameter("fecha");
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("cancion_id"));
-        String titulo = request.getParameter("titulo");
-        String duracion = request.getParameter("duracion");
-        String fecha = request.getParameter("fecha");
-        int artista_id = Integer.parseInt(request.getParameter("artista_id"));
-        int album_id = Integer.parseInt(request.getParameter("album_id"));
-        int genero_id = Integer.parseInt(request.getParameter("genero_id"));
-        int grupo_id = Integer.parseInt(request.getParameter("grupo_id"));
-        String cancion_img = request.getParameter("cancion_img");
+    int artista_id = Integer.parseInt(request.getParameter("artista_id"));
+    int album_id = Integer.parseInt(request.getParameter("album_id"));
+    int genero_id = Integer.parseInt(request.getParameter("genero_id"));
+    int grupo_id = Integer.parseInt(request.getParameter("grupo_id"));
+    String cancion_img = request.getParameter("cancion_img");
 
-        Cancion cancion = new Cancion();
-        
-        cancion.setCancion_id(id);
-        cancion.setTitulo(titulo);
+    Cancion cancion = new Cancion();
+
+    cancion.setCancion_id(id);
+    cancion.setTitulo(titulo);
+    cancion.setFecha(fecha);
+    cancion.setArtista_id(artista_id);
+    cancion.setAlbum_id(album_id);
+    cancion.setGenero_id(genero_id);
+    cancion.setGrupo_id(grupo_id);
+    cancion.setCancion_img(cancion_img);
+
+    try {
+        // Manejo de la duración de la canción
+        String[] duracionParts = duracionStr.split(":");
+        int horas = Integer.parseInt(duracionParts[0]);
+        int minutos = Integer.parseInt(duracionParts[1]);
+        int segundos = Integer.parseInt(duracionParts[2]);
+        int duracion = horas * 3600 + minutos * 60 + segundos;
         cancion.setDuracion(duracion);
-        cancion.setFecha(fecha);
-        cancion.setArtista_id(artista_id);
-        cancion.setAlbum_id(album_id);
-        cancion.setGenero_id(genero_id);
-        cancion.setGrupo_id(grupo_id);
-        cancion.setCancion_img(cancion_img);
 
-        
-        if(id == 0){
-            //nuevo
-            CancionDAO dao = new CancionDAOimpl();
-            try {
-                dao.insert(cancion);
-                response.sendRedirect("CancionControlador");
-            } catch (Exception ex) {
-                Logger.getLogger(CancionControlador.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            //editar
-            CancionDAO dao = new CancionDAOimpl();
-            try {
-                dao.update(cancion);
-                response.sendRedirect("CancionControlador");
-            } catch (Exception ex) {
-                Logger.getLogger(CancionControlador.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        CancionDAO dao = new CancionDAOimpl();
+
+        if (id == 0) {
+            dao.insert(cancion);
+        } else {
+            dao.update(cancion);
         }
+
+        response.sendRedirect("CancionControlador");
+    } catch (Exception ex) {
+        System.out.println("Error al procesar la solicitud: " + ex.getMessage());
     }
+}
+
+
 }
