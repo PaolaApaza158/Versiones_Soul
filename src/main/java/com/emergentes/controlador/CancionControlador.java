@@ -17,7 +17,13 @@ import com.emergentes.modelo.Genero;
 import com.emergentes.modelo.Grupo;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -98,12 +104,13 @@ public class CancionControlador extends HttpServlet {
             System.out.println("Error: " + e.getMessage());
         }
     }
-@Override
+
+  @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     int id = Integer.parseInt(request.getParameter("cancion_id"));
     String titulo = request.getParameter("titulo");
-    String duracionStr = request.getParameter("duracion");
+    String duracion = request.getParameter("duracion");
     String fecha = request.getParameter("fecha");
 
     int artista_id = Integer.parseInt(request.getParameter("artista_id"));
@@ -116,35 +123,52 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
     cancion.setCancion_id(id);
     cancion.setTitulo(titulo);
-    cancion.setFecha(fecha);
+    cancion.setDuracion(duracion); 
+    cancion.setFecha(convierteFecha(fecha));// Establecer duración convertida a int
     cancion.setArtista_id(artista_id);
     cancion.setAlbum_id(album_id);
     cancion.setGenero_id(genero_id);
     cancion.setGrupo_id(grupo_id);
     cancion.setCancion_img(cancion_img);
 
-    try {
-        // Manejo de la duración de la canción
-        String[] duracionParts = duracionStr.split(":");
-        int horas = Integer.parseInt(duracionParts[0]);
-        int minutos = Integer.parseInt(duracionParts[1]);
-        int segundos = Integer.parseInt(duracionParts[2]);
-        int duracion = horas * 3600 + minutos * 60 + segundos;
-        cancion.setDuracion(duracion);
+    CancionDAO dao = new CancionDAOimpl();
 
-        CancionDAO dao = new CancionDAOimpl();
-
-        if (id == 0) {
+    if (id == 0) {
+        try {
             dao.insert(cancion);
-        } else {
-            dao.update(cancion);
+            response.sendRedirect("CancionControlador");
+        } catch (Exception ex) {
+            System.out.println("Error al insertar " + ex.getMessage());
         }
-
-        response.sendRedirect("CancionControlador");
-    } catch (Exception ex) {
-        System.out.println("Error al procesar la solicitud: " + ex.getMessage());
+    } else {
+        try {
+            dao.update(cancion);
+            response.sendRedirect("CancionControlador");
+        } catch (Exception ex) {
+            System.out.println("Error al editar " + ex.getMessage());
+        }
     }
 }
-
+  public Date convierteFecha(String fecha){
+        Date fechaBD = null;
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        
+        java.util.Date fechaTMP;
+        try {
+            fechaTMP = formato.parse(fecha);
+            fechaBD = new Date(fechaTMP.getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(AlbumControlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return fechaBD;
+    }
+  
+public Time convierteDuracion(int duracion) {
+    int hours = duracion / 3600;
+    int minutes = (duracion % 3600) / 60;
+    int seconds = duracion % 60;
+    String formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    return Time.valueOf(formattedDuration);
+}
 
 }
