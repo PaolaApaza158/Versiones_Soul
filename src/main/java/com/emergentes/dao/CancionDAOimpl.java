@@ -18,8 +18,8 @@ public class CancionDAOimpl extends ConexionDB implements CancionDAO {
             String sql = "INSERT INTO cancion (titulo, duracion, fecha, artista_id, album_id, genero_id, grupo_id, cancion_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = this.conn.prepareStatement(sql);
             ps.setString(1, cancion.getTitulo());
-            ps.setTime(2, cancion.getDuracion());
-            ps.setDate(3, new java.sql.Date(cancion.getFecha().getTime()));
+            ps.setString(2, cancion.getDuracion());
+            ps.setDate (3, (java.sql.Date) cancion.getFecha());/*Verificarrrr*/
             ps.setInt(4, cancion.getArtista_id());
             ps.setInt(5, cancion.getAlbum_id());
             ps.setInt(6, cancion.getGenero_id());
@@ -42,8 +42,8 @@ public class CancionDAOimpl extends ConexionDB implements CancionDAO {
                     + "WHERE cancion_id = ?";
             PreparedStatement ps = this.conn.prepareStatement(sql);
             ps.setString(1, cancion.getTitulo());
-            ps.setTime(2, cancion.getDuracion());
-            ps.setDate(3, new java.sql.Date(cancion.getFecha().getTime()));
+            ps.setString(2, cancion.getDuracion());
+            ps.setDate (3, (java.sql.Date) cancion.getFecha());/*Verificarrrr*/
             ps.setInt(4, cancion.getArtista_id());
             ps.setInt(5, cancion.getAlbum_id());
             ps.setInt(6, cancion.getGenero_id());
@@ -86,7 +86,7 @@ public class CancionDAOimpl extends ConexionDB implements CancionDAO {
                 cancion = new Cancion();
                 cancion.setCancion_id(rs.getInt("cancion_id"));
                 cancion.setTitulo(rs.getString("titulo"));
-                cancion.setDuracion(rs.getTime("duracion"));
+                cancion.setDuracion(rs.getString("duracion"));
                 cancion.setFecha(rs.getDate("fecha"));
                 cancion.setArtista_id(rs.getInt("artista_id"));
                 cancion.setAlbum_id(rs.getInt("album_id"));
@@ -120,7 +120,7 @@ public class CancionDAOimpl extends ConexionDB implements CancionDAO {
                 Cancion cancion = new Cancion();
                 cancion.setCancion_id(rs.getInt("cancion_id"));
                 cancion.setTitulo(rs.getString("titulo"));
-                cancion.setDuracion(rs.getTime("duracion"));
+                cancion.setDuracion(rs.getString("duracion"));
                 cancion.setFecha(rs.getDate("fecha"));
                 cancion.setArtista_id(rs.getInt("artista_id"));
                 cancion.setAlbum_id(rs.getInt("album_id"));
